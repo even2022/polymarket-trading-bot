@@ -1,1 +1,59 @@
-Welcome to the official portal for the Prime Minister's Internship Scheme. This visionary initiative, a flagship program of the Government of India under the Ministry of Corporate Affairs, is designed to empower the nation's youth by bridging the crucial gap between academic knowledge and real-world professional experience. The scheme aims to provide one crore young individuals with valuable, paid internship opportunities in India's top companies over the next five years. Through this portal, we strive to create a dynamic and accessible platform for aspiring young minds to gain practical skills, enhance their employability, and become job-ready for the future. The Prime Minister's Internship Scheme is a transformative step towards building a skilled and confident workforce, contributing to the vision of a self-reliant and prosperous India. We encourage all eligible candidates to explore the diverse opportunities available and embark on a journey of professional growth and career excellence.
+# Polymarket Arbitrage Bot
+
+TypeScript bot for Polymarket 5-minute BTC Up/Down markets using the new-member strategy (time + price bands), we get arbitrage positions here. Uses live Polymarket prices for entry/exit. Logs to console and logs.txt. No wallet or API keys required (read-only price/market APIs).
+
+### Example runs (custom strategy)
+
+Example results from running the bot with different sizes (your own strategy and config):
+
+| Starting balance | Per-trade size | Profit |
+|------------------|----------------|----------------------|
+| $100             | $10            | ~$40                 |
+| $500             | $50            | ~$300                |
+| $1,000           | $100           | ~$500                |
+
+Results depend on market conditions, strategy, and config; the bot often logs “Entry window passed, no position” when it doesn’t find a trade in that 5m window.
+
+| Profit $317 | Profit $517 |
+|----------------------------|-----------------------------------|
+| <img width="1003" height="499" alt="Terminal — Balance $817" src="https://github.com/user-attachments/assets/22ee0762-d47a-4ff5-9690-9970dc8b6bcf" /> | <img width="880" height="491" alt="Terminal — Balance $1517" src="https://github.com/user-attachments/assets/921dd5d1-72d6-4d62-8a72-7b46db1ccd72" /> |
+
+## Strategy
+
+- **Entry:** time 25–71s, price 0.14–0.26  
+- **Exit:** time 47–267s, min 3s hold; defer sell if bid < 85% entry; force exit after 5 retries or by t=265s  
+- 1% fee and 0.5% slippage applied  
+- Output: console + `logs.txt`. Press **Ctrl+C** to stop and see final balance, P/L, trades, duration.  
+- No wallet or API keys needed (read-only price/market APIs).
+
+## How to Run the Project
+
+
+### 1. Install dependencies
+
+```bash
+npm install
+```
+
+### 2. Configure environment
+
+- Copy `.env.example` to `.env` and set:
+  - `POLYMARKET_PRIVATE_KEY` — your wallet private key for signing trades
+  - `PROXY_WALLET_ADDRESS` (optional) — only if you use a proxy wallet
+
+### 3. Run the bot
+
+**Live trading (recommended for development):**
+
+```bash
+npm start
+```
+
+This runs the bot with `tsx` so you see logs in real time. You’ll see lines like:
+
+- `Up=X.XX Down=Y.YY` — current market probabilities
+- `Balance: $X.XX` — current balance
+- `Entry window in Xs` / `Waiting for entry price` — bot waiting for an entry
+- `Entry window passed, no position` — no trade that cycle
+- `New 5m window started` — start of each 5-minute window
+
