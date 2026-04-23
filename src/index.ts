@@ -69,7 +69,7 @@ async function getWalletBalanceUsdc(): Promise<number | null> {
   }
 }
 
-const BET_USD = 10;
+const BET_USD = 1;
 const FEE_BPS = 100; // 1% fee per trade (100 bps)
 const FETCH_TIMEOUT_MS = 10000;
 const MAX_RETRIES = 3;
